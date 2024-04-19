@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "11994072763",
+    "project_id": "appvotaciones-be28c",
+    "storage_bucket": "appvotaciones-be28c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11994072763:android:472c16a9087b7599190b9e",
+        "android_client_info": {
+          "package_name": "hn.edu.unah.appvotaciones"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8sai8AbrYH-bZLcABHM7gDvpQSCrZSPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

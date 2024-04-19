@@ -1,0 +1,5 @@
+
+enum MyRoutes{
+  homePage,
+  votacionesPage,
+}
