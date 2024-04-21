@@ -24,7 +24,7 @@ class VotacionesPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final banda = listaBanda[index];
                     final foto = banda['Portada'];
-                    return ListTile(
+                    var listTile = ListTile(
                       title: Text(banda['nombre']),
                       subtitle: Column(
                         children: [
@@ -32,18 +32,20 @@ class VotacionesPage extends StatelessWidget {
                           Text(banda['anioLanzamiento']),
                         ],
                       ),
-                       leading: foto == ""
-              ?  const Icon(Icons.no_photography)
-              : CachedNetworkImage(
-                  imageUrl: foto!,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.no_photography),
-                ),
-
+                      leading: foto == ""
+                          ? const Icon(Icons.no_photography)
+                          : CachedNetworkImage(
+                              imageUrl: foto!,
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.no_photography),
+                            ),
                       trailing: Text(banda['votos'].toString()),
                       onTap: () async {
+                        if (banda['Portada'] == "") {
+                          return;
+                        }
                         final votos = banda['votos'] + 1;
                         await instance
                             .collection('Bandas')
@@ -51,6 +53,7 @@ class VotacionesPage extends StatelessWidget {
                             .update({'votos': votos});
                       },
                     );
+                    return listTile;
                   });
             } else {
               return const Center(
