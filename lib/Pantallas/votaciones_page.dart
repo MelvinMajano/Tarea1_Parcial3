@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class VotacionesPage extends StatelessWidget {
                   itemCount: listaBanda.length,
                   itemBuilder: (context, index) {
                     final banda = listaBanda[index];
-
+                    final foto = banda['Portada'];
                     return ListTile(
                       title: Text(banda['nombre']),
                       subtitle: Column(
@@ -31,6 +32,16 @@ class VotacionesPage extends StatelessWidget {
                           Text(banda['anioLanzamiento']),
                         ],
                       ),
+                       leading: foto == ""
+              ?  const Icon(Icons.no_photography)
+              : CachedNetworkImage(
+                  imageUrl: foto!,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.no_photography),
+                ),
+
                       trailing: Text(banda['votos'].toString()),
                       onTap: () async {
                         final votos = banda['votos'] + 1;

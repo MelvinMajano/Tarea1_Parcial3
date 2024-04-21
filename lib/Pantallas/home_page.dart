@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:appvotaciones/Pantallas/Rutas/myroute.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -11,6 +14,19 @@ class HomePage extends StatelessWidget {
   final albumcontroler = TextEditingController();
   final anioLanzamientocontroler = TextEditingController();
   final instance = FirebaseFirestore.instance;
+  var url = '';
+   String ruta = '';
+
+   Future<String> subirFoto(String path) async {
+    final storageref = FirebaseStorage.instance.ref();
+    final imagen = File(path); 
+    final iamgenPortada = storageref.child('portadas/${DateTime.now().millisecondsSinceEpoch}$ruta.jpg');
+    final uploadTask = await iamgenPortada.putFile(imagen);
+    final url = await uploadTask.ref.getDownloadURL();
+    return url;
+   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +63,7 @@ class HomePage extends StatelessWidget {
                         'album': albumcontroler.text.trim(),
                         'anioLanzamiento': anioLanzamientocontroler.text.trim(),
                         'votos': 0,
+                        'Portada': url,
                       };
 
                       if(nombrecontroler.text.trim().isEmpty || albumcontroler.text.trim().isEmpty || anioLanzamientocontroler.text.trim().isEmpty ){
@@ -55,9 +72,24 @@ class HomePage extends StatelessWidget {
                       final respuesta =
                           await instance.collection('Bandas').add(data);
                       print(respuesta);
+
+                      ruta = albumcontroler.text;
                     },
                     child: const Text('Agregar Banda'),
                   ),
+                  ElevatedButton(
+                    onPressed: () async{
+                      ImagePicker picker = ImagePicker();
+                      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                      if(image == null){
+                        return;
+                      }
+                      url = await subirFoto(image.path);
+                      print('=============url=============');
+                      print(url);
+                    },
+                    child: const Text('Subir Foto'),
+                    ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(
@@ -71,4 +103,5 @@ class HomePage extends StatelessWidget {
           ],
         )));
   }
+  
 }
