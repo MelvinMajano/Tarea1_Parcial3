@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:appvotaciones/Widgets/boart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +10,12 @@ class VotacionesPage extends StatelessWidget {
     final banda = instance.collection('Bandas').snapshots();
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 82, 71, 123),
         appBar: AppBar(
-          title: const Text('Votaciones'),
+          backgroundColor: const Color.fromARGB(255, 82, 71, 123),
+          title: const Text('Votaciones',style: TextStyle(color: Colors.white ),),
         ),
-        body: StreamBuilder(
+        body:StreamBuilder(
           stream: banda,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -24,36 +26,28 @@ class VotacionesPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final banda = listaBanda[index];
                     final foto = banda['Portada'];
-                    var listTile = ListTile(
-                      title: Text(banda['nombre']),
-                      subtitle: Column(
-                        children: [
-                          Text(banda['album']),
-                          Text(banda['anioLanzamiento']),
-                        ],
-                      ),
-                      leading: foto == ""
-                          ? const Icon(Icons.no_photography)
-                          : CachedNetworkImage(
-                              imageUrl: foto!,
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.no_photography),
-                            ),
-                      trailing: Text(banda['votos'].toString()),
-                      onTap: () async {
-                        if (banda['Portada'] == "") {
-                          return;
-                        }
-                        final votos = banda['votos'] + 1;
-                        await instance
-                            .collection('Bandas')
-                            .doc(banda.id)
-                            .update({'votos': votos});
-                      },
-                    );
-                    return listTile;
+                       var column = Column(
+                      children: [
+                        Board(
+                        titulo: banda['nombre'],
+                        nombreAlbum: 'Album: ${banda['album']}'.toString(),
+                        anio: 'Año: ${banda['anioLanzamiento']}'.toString(),
+                        votos:'Votos: ${banda['votos']}'.toString(),
+                        foto: foto, 
+                        ontap: () async {
+                          if (banda['Portada'] == "") {
+                            return;
+                          }
+                          final votos = banda['votos'] + 1;
+                          await instance
+                              .collection('Bandas')
+                              .doc(banda.id)
+                              .update({'votos': votos});
+                        }),
+                       const Padding(padding:EdgeInsets.all(20)),
+                      ],
+                      );
+                      return column;
                   });
             } else {
               return const Center(
