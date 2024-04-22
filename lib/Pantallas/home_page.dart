@@ -16,13 +16,13 @@ class HomePage extends StatelessWidget {
   final anioLanzamientocontroler = TextEditingController();
   final instance = FirebaseFirestore.instance;
   var url = '';
-  String ruta = '';
+  
 
   Future<String> subirFoto(String path) async {
     final storageref = FirebaseStorage.instance.ref();
     final imagen = File(path);
     final iamgenPortada = storageref
-        .child('portadas/${DateTime.now().millisecondsSinceEpoch}$ruta.jpg');
+        .child('portadas/${DateTime.now().millisecondsSinceEpoch}.jpg');
     final uploadTask = await iamgenPortada.putFile(imagen);
     final url = await uploadTask.ref.getDownloadURL();
     return url;
@@ -111,8 +111,18 @@ class HomePage extends StatelessWidget {
                             final respuesta =
                                 await instance.collection('Bandas').add(data);
                             print(respuesta);
+                            nombrecontroler.clear();
+                            albumcontroler.clear();
+                            anioLanzamientocontroler.clear();
 
-                            ruta = albumcontroler.text;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Banda agregada'),
+                              ),
+                            );
+
+                            url = '';
+                            
                           },
                           child: const Text('Agregar Banda'),
                         ),

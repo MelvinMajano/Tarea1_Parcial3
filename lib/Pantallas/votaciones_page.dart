@@ -13,7 +13,7 @@ class VotacionesPage extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 82, 71, 123),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 82, 71, 123),
-          title: const Text('Votaciones',style: TextStyle(color: Colors.white ),),
+          title:  const Text('Dala tap a la banda para votar',style: TextStyle(color: Colors.white, fontSize: 20),),
         ),
         body:StreamBuilder(
           stream: banda,

@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -26,6 +27,7 @@ class Board extends StatelessWidget {
     return InkWell(
       onTap: ontap as void Function()?,
       child: Container(
+          
          decoration: BoxDecoration(
               image:  DecorationImage(
                 image: NetworkImage(foto),
@@ -37,43 +39,53 @@ class Board extends StatelessWidget {
               height: 180,
               alignment: Alignment.center,
               margin: const EdgeInsets.only(right: 20, left: 20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Align(
-                      alignment: Alignment.topLeft,
+              child: FittedBox(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SingleChildScrollView(
+                          child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(titulo, 
+                          style: const TextStyle(fontSize: 30, color: Colors.white), 
+                          textAlign: TextAlign.start,))),
+                        ),
+                        SingleChildScrollView(
+                          child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(anio, 
+                          style: const TextStyle(fontSize: 20, color: Colors.white), 
+                          textAlign: TextAlign.start,))),
+                        ),
+                      ],
+                    ),
+                    SingleChildScrollView(
+                      child: Align(
+                      alignment: Alignment.centerLeft,
                       child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(titulo, 
-                      style: const TextStyle(fontSize: 30, color: Colors.white), 
+                      padding: const EdgeInsets.all(6),
+                      child: Text(nombreAlbum, 
+                      style: const TextStyle(fontSize: 25, color: Colors.white), 
                       textAlign: TextAlign.start,))),
-                      Align(
-                      alignment: Alignment.centerRight,
+                    ),
+                    const Padding(padding: EdgeInsets.all(10),),
+                    SingleChildScrollView(
+                      child: Align(
+                      alignment: Alignment.bottomRight,
                       child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: Text(anio, 
-                      style: const TextStyle(fontSize: 20, color: Colors.white), 
+                      child: Text(votos, 
+                      style: const TextStyle(fontSize: 22, color: Colors.white), 
                       textAlign: TextAlign.start,))),
-                    ],
-                  ),
-                  Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Text(nombreAlbum, 
-                  style: const TextStyle(fontSize: 25, color: Colors.white), 
-                  textAlign: TextAlign.start,))),
-                  const Padding(padding: EdgeInsets.all(10),),
-                  Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(votos, 
-                  style: const TextStyle(fontSize: 22, color: Colors.white), 
-                  textAlign: TextAlign.start,))),
-                ],
+                    ),
+                  ],
+                ),
               )
       ),
     );
